@@ -3,3 +3,7 @@
 
 ## Timeline
 - **Oct 14:** Added a Wingdings Translator which turns alphabetical text into wingdings.
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
