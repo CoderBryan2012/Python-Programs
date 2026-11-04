@@ -2,6 +2,16 @@ import threading, datetime, time
 
 result = 0
 stop_event = threading.Event()
+options = ["stopwatch", "timer", "time"]
+
+def date(year, month, day):
+  if 11 <= day <= 13:
+    suffix = "th"
+  else:
+    suffix = {1: "st", 2: "nd", 3: "rd"}.get(day % 10, "th")
+  date_obj = datetime.datetime(year, month, day)
+  month_str = date_obj.strftime("%b")
+  return f"{month_str}. {day}{suffix} {year}"
 
 def stop_watch():
   global result
@@ -12,9 +22,8 @@ def stop_watch():
     result = time.time() - start_time
 
 print("Welcome to the Clock program!\n")
-print("1. Stopwatch")
-print("2. Timer")
-print("3. Time")
+for i in range(len(options)):
+  print(f"{i+1}. {options[i].capitalize()}")
 
 m_choose = int(input("Pick your choice: "))
 
@@ -27,15 +36,17 @@ if m_choose == 1:
   stop_event.set()
   thread.join()
 
-  print(f"\nTime: {result:.2f}")
+  suffix = "" if f"{result:.2f}" == "1.00" else "s"
+  print(f"\nStopwatch finished at: {result:.2f} second{suffix}.")
   print("Stopwatch done!")
 
 if m_choose == 2:
-    timer_time = int(input("How many seconds?"))
+    timer_time = int(input("How many seconds should the timer have? "))
     for timer in range(timer_time, 0, -1):
         print(timer)
         time.sleep(1)
-    print("Timer done!")
-    
+    print("Time's up!")
+
 if m_choose == 3:
-    print(datetime.datetime.now())
+  time = datetime.datetime.now()
+  print(f"\nToday is {date(time.year,time.month, time.day)}")
