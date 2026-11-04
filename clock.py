@@ -1,13 +1,14 @@
 import threading, time
 from datetime import datetime
 from zoneinfo import ZoneInfo, available_timezones
+
 result = 0
 stop_event = threading.Event()
 options = ["stopwatch", "timer", "time zone"]
 
 def stop_watch():
   global result
-  print("Stopwatch started!")
+  print("\nStopwatch started!")
   start_time = time.time()
   while not stop_event.is_set():
     time.sleep(0.05)
@@ -24,13 +25,16 @@ def format_date(year, month, day):
 
 def time_zone_handler(country):
   zones = sorted(filter(lambda x: country in x, available_timezones()))
+  if not zones:
+    print(f"No timezones were found that match {country}.")
+    return
   print(f"\nTime zones that match {country}:")
   for element in zones:
     print(element)
   zone_input = input("Which timezone is yours? ")
   zone_now = datetime.now(ZoneInfo(zone_input))
   print(f"\nToday is {format_date(zone_now.year,zone_now.month, zone_now.day)}.")
-  print(f"The Time is {zone_now.hour}:{zone_now.minute}:{zone_now.second}.")
+  print(f"The Time is {zone_now.hour:02d}:{zone_now.minute:02d}.")
 
 
 print("Welcome to the Clock program!\n")
@@ -53,12 +57,15 @@ if m_choose == 1:
   print("Stopwatch done!")
 
 if m_choose == 2:
-    timer_time = int(input("How many seconds should the timer have? "))
-    for timer in range(timer_time, 0, -1):
-        print(timer)
-        time.sleep(1)
-    print("Time's up!")
+    timer_time = int(input("\nHow many seconds should the timer have? "))
+    if timer_time < 0:
+      print("Timer cannot be less than zero.")
+    else:
+      for t in range(timer_time, 0, -1):
+          print(t)
+          time.sleep(1)
+      print("Time's up!")
 
-if m_choose == 3:
-  country_input = input("What country are you in? ")
-time_zone_handler(country_input)
+elif m_choose == 3:
+  country_input = input("\nWhat country are you in? ")
+  time_zone_handler(country_input)
