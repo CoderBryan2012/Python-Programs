@@ -1,155 +1,65 @@
 import math
+import inspect
+
+areas = {
+    "square": lambda s: s*s,
+    "rectangle": lambda b,h: b*h,
+    "parallelogram": lambda b,h: b*h,
+    "triangle": lambda b,h: 0.5 * b*h,
+    "circle": lambda r: math.pi * r * r,
+    "rhombus": lambda d1,d2: 0.5 * d1*d2,
+    "semicircle": lambda r: 0.5 * math.pi * r * r,
+    "quartercircle": lambda r: 0.25 * math.pi * r * r,
+    "trapezoid": lambda b1, b2, h: ((b1 + b2) * h) / 2,
+    "trapezium": lambda b1, b2, h: ((b1 + b2) * h) / 2,
+    "sector": lambda r, a: (a / 360) * math.pi * (r * r),
+}
+
+perimeters = {
+    "square": lambda s: s*4,
+    "rhombus": lambda s: s * 4,
+    "rectangle": lambda l,w: 2 * (l+w),
+    "parallelogram": lambda l,w: 2 * (l+w),
+    "triangle": lambda s1,s2,b: s1 + s2 + b,
+    "circle": lambda r: 2 * (math.pi * r),
+    "semicircle": lambda r: (2 * r) + (math.pi * r),
+    "quartercircle": lambda r: 2 * r + (math.pi * r) / 2,
+    "trapezoid": lambda b1, b2, b3, b4 : b1 + b2 + b3 + b4,
+    "trapezium": lambda b1, b2, b3, b4 : b1 + b2 + b3 + b4,
+    "sector": lambda r, a_d: (2 * r) + ((a_d / 360) * (2 * math.pi * r)),
+}
 
 print("Equations: Arithmetic. Areas, Perimeters")
-equation = input("What math equation would you like to try? ").lower()
+equation = input("What math equation would you like to try? (Type 'area' or 'perimeter'): ").lower()
 
-if equation == "area" or equation ==  "areas":
+# Determine which dictionary to use based on user input
+if "area" in equation:
+    target_dict = areas
+    mode = "Area"
+elif "perimeter" in equation or "circumference" in equation:
+    target_dict = perimeters
+    mode = "Perimeter"
+else:
+    print("Invalid choice. Please choose either 'area' or 'perimeter'.")
+    exit()
 
-    print("\n")
+print(f"\nAvailable shapes for {mode}:")
+print(" | ".join([shape.capitalize() for shape in target_dict.keys()]))
 
-    print("Areas: Square / Parallelogram, Triangle / Rhombus, Circle, Semicircle, Quartercircle, Trapezoid / Trapezium and Sector.")
-    areas = input("What area would you like to calculate? ").lower()
+shape_choice = input(f"\nWhat {mode.lower()} would you like to calculate? ").lower()
 
-    if areas == "square" or areas == "rectangle" or areas == "parallelogram":
-        base = float(input("What is the base? "))
-        height = float(input("What is the height? "))
-        result = (base * height)
-        print(f"The area of a {areas} with a base of {base} and height of {height} is {result}.")
-
-    elif areas == "triangle" or areas == "rhombus":
-        base = float(input("What is the base? "))
-        height = float(input("What is the height? "))
-        result = (base * height) / 2
-        print(f"The area of a {areas} with a base of {base} and height of {height} is {result}.")
-
-    elif areas == "circle":
-        radius = float(input("What is the radius? "))
-        result = math.pi * (radius ** 2)
-        print(f"The area of a {areas} with a radius of {radius} is {result}.")
-
-    elif areas == "semicircle":
-        radius = float(input("What is the radius? "))
-        result = math.pi * (radius ** 2) / 2
-        print(f"The area of a {areas} with a radius of {radius} is {result}.")
-
-    elif areas == "quartercircle":
-        radius = float(input("What is the radius? "))
-        result = math.pi * (radius ** 2) / 4
-        print(f"The area of a {areas} with a radius of {radius} is {result}.")
-        
-    elif areas == "trapezoid" or areas == "trapezium":
-        base1 = float(input("What is the first base? "))
-        base2 = float(input("What is the second base? "))
-        height = float(input("What is the height? "))
-        result = ((base1 + base2) * height) / 2
-        print(f"The area of a {areas} with a base of {base1}, {base2} and height of {height} is {result}.")
+if shape_choice in target_dict:
+    func = target_dict[shape_choice]
     
-    elif areas == "sector":
-        radius = float(input("What is the radius? "))
-        angle = float(input("What is the angle? "))
-        result = (angle / 360) * math.pi * (radius ** 2)
-        print(f"The area of a {angle}-degree sector with a radius of {radius} is: {result}")
-
-    else:
-        print("\nInvalid Area.")
-        
-elif equation == "perimeter":
-
-    print("\n")
-
-    print("Perimeter: Square / Parallelogram, Triangle / Rhombus, Circle, Semicircle, Quartercircle, Trapezoid / Trapezium and Sector.")
-    perimeter = input("Which perimeter would you like to calculate?").lower()
-
-    if perimeter == "square" or perimeter == "rhombus":
-        side = float(input("What is the side? "))
-        result = (side * 4)
-        print(f"The perimeter of a {perimeter} with a side length of {side} is {result}.")
-
-    elif perimeter == "triangle":
-        side1 = float(input("What is the first side?"))
-        side2 = float(input("What is the second side?"))
-        base = float(input("What is the base?"))
-        result = (side1 + side2 + base)
-        print(f"The perimeter of a {perimeter} with a side of {side1}, {side2} and a base of {base} is {result}.")
-
-    elif perimeter == "rectangle" or perimeter == "parallelogram":
-        length = float(input("What is the length? "))
-        width = float(input("What is the width? "))
-        result = 2 * (length + width)
-        print(f"The perimeter of a {perimeter} with a length of {length} and a width of {width} is {result}.")
-
-    elif perimeter == "circle":
-        radius = float(input("What is the radius? "))
-        result = 2 * (math.pi * radius)
-        print(f"The perimeter of a {perimeter} with a radius of {radius} is {result}.")
-
-
-    elif perimeter == "semicircle":
-        radius = float(input("What is the radius? "))
-        result = (2 * radius) + (math.pi * radius)
-        print(f"The perimeter of a {perimeter} with a radius of {radius} is {result}.")
-
-
-    elif perimeter == "quartercircle":
-        radius = float(input("What is the radius? "))
-        result =  2 * radius + (math.pi * radius) / 2
-        print(f"The perimeter of a {perimeter} with a radius of {radius} is {result}.")
-
-    elif perimeter == "trapezoid" or perimeter == "trapezium":
-        base1 =  float(input("What is the first base?"))
-        base2 =  float(input("What is the second base?"))
-        base3 = float(input("What is the third base?"))
-        base4 = float(input("What is the fourth base?"))
-        result = (base1 + base2 + base3 + base4)
-        print(f"The perimeter of a {perimeter} with a base of {base1}, {base2}, {base3}, {base4} is {result}.")
-        
-    elif perimeter == "sector":
-        radius = float(input("What is the radius? "))
-        arc_degrees = float(input("What is the angle degree? "))
-        arc_length = (arc_degrees / 360) * (2 * math.pi * radius)
-        result = (2 * radius) + arc_length
-        print(f"The perimeter of a {arc_degrees}-degree sector with a radius of {radius} is: {result}")
-            
-
-
-elif equation == "arithmetic" or equation == "arith":
-
-    print("\n")
-    print("Arithmetic: Addition / Add, Subtraction / Subtract, Multiplication, Multiply, Division / Divide, Exponents / Square, and sqrt / Root.")
-    arithmetic = input("Which Arithmetic would you like to calculate? ").lower()
-
-    if arithmetic == "addition" or arithmetic ==  "add":
-        num1 = float(input("What is your first number? "))
-        num2 = float(input("What is your second number? "))
-        result = (num1 + num2)
-        print(f"The answer is {result}.")
-
-    elif arithmetic == "subtraction" or arithmetic == "subtract":
-        num1 = float(input("What is your first number? "))
-        num2 = float(input("What is your second number? "))
-        result = (num1 - num2)
-        print(f"The answer is {result}.")
-
-    elif arithmetic == "multiplication" or arithmetic == "multiply":
-        num1 = float(input("What is your first number? "))
-        num2 = float(input("What is your second number? "))
-        result = (num1 * num2)
-        print(f"The answer is {result}.")
-
-    elif arithmetic == "division" or arithmetic == "divide":
-        num1 = float(input("What is your first number? "))
-        num2 = float(input("What is your second number? "))
-        result = (num1 / num2)
-        print(f"The answer is {result}.")
-
-    elif arithmetic == "exponents" or arithmetic == "square":
-        num = float(input("What is your number? "))
-        square = float(input("What is your square number? "))
-        result = (num ** square)
-        print(f"The answer is {result}.")
+    sig = inspect.signature(func)
+    args = []
     
-    elif arithmetic == "sqrt" or arithmetic == "root":
-        num = float(input("What is your number? "))
-        sqrt = float(input("What is your square root? "))
-        result = (math.sqrt(num))
-        print(f"The answer is {result}.")
+    print(f"\nPlease enter the measurements for a {shape_choice}:")
+    for param in sig.parameters.keys():
+        val = float(input(f"Enter value for {param}: "))
+        args = args + [val]
+        
+    result = func(*args)
+    print(f"\nThe {mode.lower()} of the {shape_choice} is: {result:.2f}")
+else:
+    print(f"\nError: {mode} of '{shape_choice}' could not be found.")
