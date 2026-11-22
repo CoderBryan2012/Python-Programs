@@ -21,4 +21,4 @@ def generate_password(length, type): # A function with diverse types of password
         password.append(str(random.randint(1,9)))
       return "".join(password)
     else:
-      print(f"Password type {type} not found.")
+      raise ValueError(f"Password type '{type}' not found.")
