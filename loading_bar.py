@@ -6,5 +6,3 @@ def loading_bar(bars, delay):
         print("█", end="", flush=True)
         time.sleep(delay)
     print("100%")
-    
-loading_bar(5, 0.5)
