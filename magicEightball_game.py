@@ -1,7 +1,6 @@
-#magic eightball game
 import random, time
 
-
+# Different Responses split into lists for customizability
 affirmative_responses = [
    "It is certain",
    "It is decidedly so",
@@ -34,7 +33,8 @@ negative_responses = [
 # A master list containing all 20 responses
 all_responses = affirmative_responses + non_committal_responses + negative_responses
 
-while True:
+while True: # Infinite loop for magic ball 
    user_input = input("Type a yes or no question: ")
-   print(time.sleep(random.randint(1,10)))
-   print(random.choice(all_responses))
+   time.sleep(random.randint(1,10))
+   print(f"Magic Eightball: {random.choice(all_responses)}")
+   print("\n")
