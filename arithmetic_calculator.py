@@ -28,38 +28,40 @@ perimeters = {
     "trapezium": lambda b1, b2, b3, b4 : b1 + b2 + b3 + b4,
     "sector": lambda r, a_d: (2 * r) + ((a_d / 360) * (2 * math.pi * r)),
 }
+def start_program():
+  print("Equations: Arithmetic. Areas, Perimeters")
+  equation = input("What math equation would you like to try? (Type 'area' or 'perimeter'): ").lower()
 
-print("Equations: Arithmetic. Areas, Perimeters")
-equation = input("What math equation would you like to try? (Type 'area' or 'perimeter'): ").lower()
+  # Determine which dictionary to use based on user input
+  if "area" in equation:
+      target_dict = areas
+      mode = "Area"
+  elif "perimeter" in equation or "circumference" in equation:
+      target_dict = perimeters
+      mode = "Perimeter"
+  else:
+      print("Invalid choice. Please choose either 'area' or 'perimeter'.")
+      exit()
 
-# Determine which dictionary to use based on user input
-if "area" in equation:
-    target_dict = areas
-    mode = "Area"
-elif "perimeter" in equation or "circumference" in equation:
-    target_dict = perimeters
-    mode = "Perimeter"
-else:
-    print("Invalid choice. Please choose either 'area' or 'perimeter'.")
-    exit()
+  print(f"\nAvailable shapes for {mode}:")
+  print(" | ".join([shape.capitalize() for shape in target_dict.keys()]))
 
-print(f"\nAvailable shapes for {mode}:")
-print(" | ".join([shape.capitalize() for shape in target_dict.keys()]))
+  shape_choice = input(f"\nWhat {mode.lower()} would you like to calculate? ").lower()
 
-shape_choice = input(f"\nWhat {mode.lower()} would you like to calculate? ").lower()
-
-if shape_choice in target_dict:
-    func = target_dict[shape_choice]
-    
-    sig = inspect.signature(func)
-    args = []
-    
-    print(f"\nPlease enter the measurements for a {shape_choice}:")
-    for param in sig.parameters.keys():
-        val = float(input(f"Enter value for {param}: "))
-        args = args + [val]
-        
-    result = func(*args)
-    print(f"\nThe {mode.lower()} of the {shape_choice} is: {result:.2f}")
-else:
-    print(f"\nError: {mode} of '{shape_choice}' could not be found.")
+  if shape_choice in target_dict:
+      func = target_dict[shape_choice]
+      
+      sig = inspect.signature(func)
+      args = []
+      
+      print(f"\nPlease enter the measurements for a {shape_choice}:")
+      for param in sig.parameters.keys():
+          val = float(input(f"Enter value for {param}: "))
+          args = args + [val]
+          
+      result = func(*args)
+      print(f"\nThe {mode.lower()} of the {shape_choice} is: {result:.2f}")
+  else:
+      print(f"\nError: {mode} of '{shape_choice}' could not be found.")
+if __name__ == "__main__":
+    start_program()
