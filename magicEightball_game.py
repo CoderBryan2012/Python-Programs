@@ -32,9 +32,11 @@ negative_responses = [
 
 # A master list containing all 20 responses
 all_responses = affirmative_responses + non_committal_responses + negative_responses
-
-while True: # Infinite loop for magic ball 
-   user_input = input("Type a yes or no question: ")
-   time.sleep(random.randint(1,10))
-   print(f"Magic Eightball: {random.choice(all_responses)}")
-   print("\n")
+def start_program():
+  while True: # Infinite loop for magic ball 
+    user_input = input("Type a yes or no question: ")
+    time.sleep(random.randint(1,10))
+    print(f"Magic Eightball: {random.choice(all_responses)}")
+    print("\n")
+if __name__ == "__main__":
+    start_program()
